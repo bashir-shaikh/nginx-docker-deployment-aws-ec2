@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NginxVerse - A custom website deployed using Docker, Nginx and AWS EC2.">
+    <title>NginxVerse | Powered by Docker</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #080f20;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(12, 23, 45, 0.95);
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        nav a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        .hero {
+            min-height: 520px;
+            padding: 100px 8%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            background:
+                radial-gradient(circle at 80% 20%, #164e8a 0%, transparent 35%),
+                linear-gradient(135deg, #080f20, #102c50);
+        }
+
+        .tag {
+            color: #38bdf8;
+            border: 1px solid #2563eb;
+            border-radius: 30px;
+            padding: 7px 16px;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 7vw, 72px);
+            line-height: 1.1;
+            max-width: 750px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            color: #cbd5e1;
+            max-width: 650px;
+            font-size: 17px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #0284c7;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #0ea5e9;
+            transform: translateY(-3px);
+        }
+
+        section {
+            padding: 75px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 45px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: #111e35;
+            padding: 28px;
+            border: 1px solid #243b5b;
+            border-radius: 14px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            border-color: #38bdf8;
+        }
+
+        .card .icon {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: #38bdf8;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #aebed2;
+            font-size: 14px;
+        }
+
+        .architecture {
+            background: #0d192d;
+        }
+
+        .architecture-flow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .architecture-item {
+            background: #142744;
+            border: 1px solid #2563eb;
+            padding: 20px 25px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .architecture-item strong {
+            display: block;
+            color: #38bdf8;
+            margin-bottom: 5px;
+        }
+
+        .arrow {
+            color: #38bdf8;
+            font-size: 25px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .stat-box {
+            background: #111e35;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #243b5b;
+        }
+
+        .stat-box h2 {
+            color: #38bdf8;
+            font-size: 30px;
+        }
+
+        .stat-box p {
+            color: #aebed2;
+            font-size: 14px;
+        }
+
+        footer {
+            background: #060b16;
+            padding: 30px 8%;
+            text-align: center;
+            color: #94a3b8;
+            border-top: 1px solid #1e293b;
+        }
+
+        footer span {
+            color: #38bdf8;
+        }
+
+        .fade-in {
+            animation: appear 1s ease-in-out;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 650px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 7px;
+            }
+
+            .hero {
+                padding: 75px 7%;
+            }
+
+            section {
+                padding: 55px 7%;
+            }
+
+            .architecture-flow {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">NginxVerse.</div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero fade-in" id="home">
+            <div class="tag">AWS EC2 | DOCKER | NGINX</div>
+
+            <h1>
+                Welcome to <span>NginxVerse</span>
+            </h1>
+
+            <p>
+                Discover a modern website deployment powered by Docker
+                and Nginx, hosted on Amazon EC2. Simple technology,
+                powerful deployment.
+            </p>
+
+            <a href="#features" class="btn">Explore Project →</a>
+        </section>
+
+        <section id="features">
+            <h2 class="section-title">What Powers NginxVerse?</h2>
+
+            <p class="section-subtitle">
+                Technologies working together to deliver this website.
+            </p>
+
+            <div class="features">
+                <div class="card">
+                    <div class="icon">☁️</div>
+                    <h3>AWS EC2</h3>
+                    <p>
+                        Cloud infrastructure used to host and run
+                        the application on a virtual server.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">🐳</div>
+                    <h3>Docker</h3>
+                    <p>
+                        Containerization technology used to package
+                        and run the website in an isolated environment.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">🌐</div>
+                    <h3>Nginx</h3>
+                    <p>
+                        A lightweight and powerful web server that
+                        delivers the website content to visitors.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">💻</div>
+                    <h3>HTML & CSS</h3>
+                    <p>
+                        Used to build the responsive interface,
+                        layout and visual design of NginxVerse.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="architecture" id="architecture">
+            <h2 class="section-title">Project Architecture</h2>
+
+            <p class="section-subtitle">
+                How a visitor reaches the NginxVerse website.
+            </p>
+
+            <div class="architecture-flow">
+                <div class="architecture-item">
+                    <strong>01</strong>
+                    User Browser
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="architecture-item">
+                    <strong>02</strong>
+                    AWS EC2
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="architecture-item">
+                    <strong>03</strong>
+                    Docker
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="architecture-item">
+                    <strong>04</strong>
+                    Nginx
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="architecture-item">
+                    <strong>05</strong>
+                    Website
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2 class="section-title">Project Highlights</h2>
+
+            <p class="section-subtitle">
+                Key technologies and concepts demonstrated in this project.
+            </p>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <h2>☁️</h2>
+                    <p>Cloud Deployment</p>
+                </div>
+
+                <div class="stat-box">
+                    <h2>🐳</h2>
+                    <p>Docker Containerization</p>
+                </div>
+
+                <div class="stat-box">
+                    <h2>🌐</h2>
+                    <p>Nginx Web Server</p>
+                </div>
+
+                <div class="stat-box">
+                    <h2>⚡</h2>
+                    <p>Responsive Design</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            Built with <span>♥</span> by Bashir Shaikh
+        </p>
+        <p> NginxVerse | Docker + AWS EC2 Project </p>
+    </footer>
+
+</body>
+</html>
